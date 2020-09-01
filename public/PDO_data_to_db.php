@@ -61,7 +61,7 @@ class cwbPDO extends PDO{
         return self::$DB->exec($sql);
     }
 
-    // get: feth_row
+    // get: fetch_row
     public function fetRowCount($table, $field = '*', $where = false){
         $sql = "SELECT COUNT({$field}) AS num FROM `$table`";
         $sql .= ($where) ? "WHERE $where" : "";
@@ -77,6 +77,16 @@ class cwbPDO extends PDO{
         return self::execute($sql);
 
     }
+
+    // drop: TRUNCATE table
+    public function dropTable($table){
+        $sql = "TRUNCATE TABLE `$table`";
+
+        return self::execute($sql);
+    }
+
+    // get: fetch_all
+    
 
 
 
