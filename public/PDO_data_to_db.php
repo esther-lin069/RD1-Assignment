@@ -58,7 +58,8 @@ class cwbPDO extends PDO{
 
     //執行sql語句
     public function execute($sql) {
-        return self::$DB->exec($sql);
+        $prepare = self::$DB->prepare($sql);
+        return $prepare->execute();
     }
 
     // get: fetch_row
@@ -86,7 +87,16 @@ class cwbPDO extends PDO{
     }
 
     // get: fetch_all
-    
+    public function all($table, $field = '*', $where = false){
+        $sql = "SELECT {$field} FROM `{$table}`";
+        $sql .= ($where) ? "WHERE $where" : '';
+
+        $sth = self::$DB->prepare($sql);
+        $sth->execute();
+        $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        return $rows;
+    }
 
 
 

@@ -11,8 +11,9 @@ $url = array(
 );
 
 //main function
-updateData();
+//updateData();
 
+showData();
 
 
 function updateData(){
@@ -35,6 +36,13 @@ function addData($table,$data){
 function dropTable($table){
     $pod = new cwbPDO();
     $pod->dropTable($table);
+}
+
+function showData(){
+    $pod = new cwbPDO();
+    $show = $pod->all('weather_week','startTime',"`location` = '雲林縣'");
+
+    var_dump($show);
 }
 
 
