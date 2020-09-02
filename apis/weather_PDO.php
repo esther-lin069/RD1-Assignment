@@ -46,8 +46,8 @@ class cwbPDO extends PDO{
         $code = '';
         if(is_array($args)){
             foreach ($args as $k => $v){
-                if($v == '')
-                    continue;
+                // if($v == '')
+                //     continue;
                 $code .="`$k` = '$v',";
             }
         }
@@ -91,9 +91,9 @@ class cwbPDO extends PDO{
         $sql = "SELECT {$field} FROM `{$table}`";
         $sql .= ($where) ? "WHERE $where" : '';
 
-        $sth = self::$DB->prepare($sql);
-        $sth->execute();
-        $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = self::$DB->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $rows;
     }

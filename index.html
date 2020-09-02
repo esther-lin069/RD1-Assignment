@@ -25,43 +25,73 @@
     <title>Weather</title>
 </head>
 <body>
-
+  <!-- nav -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <div class="container">
-              <a class="navbar-brand" href="#">EstherWeather</a>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                  <li class="nav-item active">
-                    <a class="nav-link" href="#">首頁
-                      <span class="sr-only">(current)</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">降雨觀測</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">縣市天氣</a>
-                  </li>                    
-                </ul>
-                <select class="selectpicker" data-live-search="true">
-                    <option>Hot Dog, Fries and a Soda</option>
-                    <option>Burger, Shake and a Smile</option>
-                    <option>Sugar, Spice and all things nice</option>
-                </select>
-              </div>
-            </div>
-        </nav>
-        
+      <a class="navbar-brand" href="#">EstherWeather</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">首頁
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">降雨觀測</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">縣市天氣</a>
+          </li>                    
+        </ul>
+        <select id="citys" class="selectpicker" a-live-sedatarch="true">
+            <option value="台中市">台中市</option>
+            <option value="台南市">台南市</option>
+        </select>
+      </div>
     </div>
+</nav>
+<!-- end nav -->
+
+<main role="main" class="container">
+  <div class="page-content">
+    <div style="height: 100px;"></div>
+    <!-- weeks card -->
+    <div class="card-group">
+      
+
+      
+    </div>
+    <!-- cards end -->
+  </div>
+</main>
+
 </body>
 
 <script>
-    $.fn.selectpicker.Constructor.BootstrapVersion = '4.5.2';
     $(function(){
+      //why cant it works?
+      $("#citys").append($('<option>',
+      {
+        value: "value",
+        text : "text"
+      }));
+
+      var week = ['一','二','三','四','五','六','日'];
+
+      $.each(week,function(day, value){
+        var content = `<div class="card"><div class="card-header text-center">
+          <h5>${value}</h5>
+        </div><div class="card-body">
+          <h4 class="card-title">Hello</h4>
+          <img src="" alt="">
+        </div></div>`;
+        $(".card-group").append($(content));
+        console.log(value);
+      })
+      
 
     })
 

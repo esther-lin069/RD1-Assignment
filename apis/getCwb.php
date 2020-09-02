@@ -14,7 +14,7 @@ $url = array(
 //main function
 //updateData();
 
-getData();
+getData_Week('臺中市');
 
 
 function updateData(){
@@ -39,11 +39,17 @@ function dropTable($table){
     $pod->dropTable($table);
 }
 
-function getData(){
+function getData_Week($location){
     $pod = new cwbPDO();
-    $show = $pod->all('weather_week','startTime',"`location` = '雲林縣'");
+    $rows = $pod->all('weather_week','`elementName`,`value`,`Date`',"`location` = '$location' AND `Time` = '06:00' ORDER BY `Date`");
 
-    var_dump($show);
+    foreach($rows as $row){
+        echo($row['Date'])." :";
+        echo($row['elementName'])." / ";
+        echo($row['value'])."<br>";
+    }
+    echo "<hr>";
+    var_dump($rows);
 }
 
 
@@ -60,7 +66,7 @@ function getJson($url,$table){
 
         case 'weather_72h':
             $data_location = $data['records']['locations'][0]['location'];
-            getWeatherThreeDays($data_location);
+            //getWeatherThreeDays($data_location);
         break;
 
         default:
@@ -85,18 +91,21 @@ function getWeatherWeek($data){
             $list['elementName'] = $name['elementName'];
             foreach($name['time'] as $time){
 
-                $list['startTime'] = $time['startTime'];
+                $date = date_create($time['startTime']);
+                $list['Date'] = date_format($date,"m/d");
+                $list['Time'] = date_format($date,"H:i");
 
                 foreach($time['elementValue'] as $value){
                     $v = $value['value'];
                     if(is_numeric($v) || $v == " ")
                         $v= intval($v);
                     
-                        $list['value'] = $v;
+                    $list['value'] = $v;
 
-                        //do upload here
-                        addData($table[0],$list);
-                        //var_dump($list);                
+                    //do upload here
+                    addData($table[0],$list);
+                    //var_dump($list);
+                    //echo "<br>";                
                 break;
                 }
                 
