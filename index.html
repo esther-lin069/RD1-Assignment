@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <META HTTP-EQUIV="pragma" CONTENT="no-cache">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="scss/main.css">
 
@@ -50,9 +51,29 @@
             <a class="nav-link" href="#">縣市天氣</a>
           </li>                    
         </ul>
-        <select id="citys" class="selectpicker" a-live-sedatarch="true">
-            <option value="台中市">台中市</option>
-            <option value="台南市">台南市</option>
+        <select id="citys" class="selectpicker" data-live-search="true">
+          <option value="雲林縣">雲林縣</option>
+          <option value="南投縣">南投縣</option>
+          <option value="連江縣">連江縣</option>
+          <option value="臺東縣">臺東縣</option>
+          <option value="金門縣">金門縣</option>
+          <option value="宜蘭縣">宜蘭縣</option>
+          <option value="屏東縣">屏東縣</option>
+          <option value="苗栗縣">苗栗縣</option>
+          <option value="澎湖縣">澎湖縣</option>
+          <option value="臺北市">臺北市</option>
+          <option value="新竹縣">新竹縣</option>
+          <option value="花蓮縣">花蓮縣</option>
+          <option value="高雄市">高雄市</option>
+          <option value="彰化縣">彰化縣</option>
+          <option value="新竹市">新竹市</option>
+          <option value="新北市">新北市</option>
+          <option value="基隆市">基隆市</option>
+          <option value="臺中市" selected>臺中市</option>
+          <option value="臺南市">臺南市</option>
+          <option value="桃園市">桃園市</option>
+          <option value="嘉義縣">嘉義縣</option>
+          <option value="嘉義市">嘉義市</option>
         </select>
       </div>
     </div>
@@ -64,9 +85,19 @@
     <div style="height: 100px;"></div>
     <!-- chart -->
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-5">
+
+      </div>
+      <div class="col-sm-7">
           <!-- 統計圖畫在這裡 -->
-          <canvas id="chartCanvas"></canvas>
+        <canvas id="chartCanvas"></canvas>
+        <div class="pop">
+          <table>
+            <tr>
+              <!-- pop6h -->              
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
     <!-- weeks card -->
@@ -80,17 +111,31 @@
 
 <script>
     $(function(){
-      //why cant it works?
-      $("#citys").append($('<option>',
-      {
-        value: "value",
-        text : "text"
-      }));
-      getWeek();
-      getTwoDays();
 
-      function getWeek(){
-        $.get('http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=臺中市&type=week',function(result){
+      
+      changCity('臺中市');
+      //這裡不知道為什麼用不了
+      // var test = ['123','456','789'];
+      // for(var t in test){
+      //   var o = `<option value="${t}">${test[t]}</option>`;
+      //   $("#citys").append($(o));
+      // }
+      
+      $("#citys").change(function(){
+        $(".pop table").empty();
+        $(".card-group").empty();
+        $location = $("#citys").val();        
+        changCity($location);
+      })
+
+      function changCity(city){
+        getWeek(city);
+        getTwoDays(city);
+      }
+      
+
+      function getWeek(location){
+        $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=week`,function(result){
           var obj = JSON.parse(result);
 
           for(let days in obj){
@@ -101,8 +146,8 @@
         })
       }
 
-      function getTwoDays(){
-        $.get('http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=臺中市&type=72h',function(result){
+      function getTwoDays(location){
+        $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=72h`,function(result){
           var obj = JSON.parse(result);
           var timeList = [];
           var TList = [];
@@ -113,6 +158,9 @@
             timeList.push(time);
             TList.push(data['T']);
             ATList.push(data['AT']);
+            
+            if(data['PoP6h'] !== undefined)
+              setPoP6h(data['PoP6h']);
           }
           //console.log(ATList);
           setDayChart(timeList,TList,ATList);
@@ -132,6 +180,12 @@
         //這裏有空可以做星期
       }
       //var week = ['一','二','三','四','五','六','日'];
+
+      function setPoP6h(data){
+        
+        var td = `<td>&nbsp;<i class="fa fa-umbrella"></i>&nbsp;${data}</td>`;
+        $(".pop table").append($(td));
+      }
 
       function setDayChart(timeList,TList,ATList){
         //取陣列中的最小值
@@ -164,6 +218,7 @@
                 ]
             },
             options: {
+              hover: {animationDuration: 0},
               title: {
                   display: true,
                   text: '今明溫度曲線'
@@ -173,7 +228,7 @@
                 "onComplete": function() {
                   var chartInstance = this.chart,
                     ctx = chartInstance.ctx;
-
+                  //這裡還要研究字體顏色
                     ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'bottom';
@@ -189,16 +244,19 @@
               },
               scales: { 
                 xAxes: [{ 
-                gridLines: { 
-                  show: true, 
-                  color: "F3F3F3", 
-                } 
+                  gridLines: { 
+                    display : false, 
+                  }, 
                 }], 
                 yAxes: [{ 
-                  ticks: { 
+                  ticks: {
+                    //display: false, 
                     suggestedMin: CminT-5,
                     suggestedMax: 45,
                     stepSize: 5
+                  },
+                  gridLines: { 
+                    display : false, 
                   } 
                 }] 
               }, 
