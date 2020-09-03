@@ -11,10 +11,24 @@ $url = array(
 );
 
 
+// get_action
+if(isset($_GET['location'])){
+    $location = $_GET['location'];
+    //echo $location;
+
+    if($_GET['type'] == 'week'){
+        getData_Week($table[0],$location);
+    }
+    else if($_GET['type'] == '72h'){
+
+    }
+}
+
+
 //main function
 //updateData();
 
-getData_Week('臺中市');
+
 
 
 function updateData(){
@@ -39,17 +53,19 @@ function dropTable($table){
     $pod->dropTable($table);
 }
 
-function getData_Week($location){
+function getData_Week($table,$location){
     $pod = new cwbPDO();
-    $rows = $pod->all('weather_week','`elementName`,`value`,`Date`',"`location` = '$location' AND `Time` = '06:00' ORDER BY `Date`");
+    $sql = <<<sql
+    SELECT `Date`,GROUP_CONCAT(concat('"',`elementName`,'"',':"',`value`,'"') separator ',') as 'data' 
+    FROM (SELECT `Date`,elementName,value  FROM `$table` WHERE location = '$location' AND `Time` = '06:00' 
+    ORDER BY `Date`)as t GROUP BY `Date`
+    sql;
+    $rows = $pod->get($table,$sql);
+    foreach($rows as $k => $v){
+        $rows[$k]['data'] = "{".$rows[$k]['data']."}";
+    }    
 
-    foreach($rows as $row){
-        echo($row['Date'])." :";
-        echo($row['elementName'])." / ";
-        echo($row['value'])."<br>";
-    }
-    echo "<hr>";
-    var_dump($rows);
+    echo (json_encode($rows));
 }
 
 
@@ -66,7 +82,7 @@ function getJson($url,$table){
 
         case 'weather_72h':
             $data_location = $data['records']['locations'][0]['location'];
-            //getWeatherThreeDays($data_location);
+            getWeatherThreeDays($data_location);
         break;
 
         default:
@@ -97,8 +113,8 @@ function getWeatherWeek($data){
 
                 foreach($time['elementValue'] as $value){
                     $v = $value['value'];
-                    if(is_numeric($v) || $v == " ")
-                        $v= intval($v);
+                    if($v == " ")
+                        $v= '-';
                     
                     $list['value'] = $v;
 

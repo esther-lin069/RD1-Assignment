@@ -79,18 +79,35 @@
         text : "text"
       }));
 
+      $.get('http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=臺中市&type=week',function(result){
+        //console.log(result);
+        var obj = JSON.parse(result);
+
+        for(let days in obj){
+          var day = obj[days]['Date'];
+          var data = JSON.parse(obj[days]['data']);
+          console.log(data);
+          setWeek (day,data);         
+            
+        }
+        
+        
+      })
+
+      function setWeek (day,data){
+        var content = `<div class="card"><div class="card-header text-center">
+          <h5>${day}</h5>
+        </div><div class="card-body">
+          <h5 class="card-title"></h5>
+          <img src="" alt="">
+          <p class="card-text">${data['Wx']}<br>${data['MinT']}-${data['MaxT']}<br>${data['PoP12h']}</p>
+        </div></div>`;
+          $(".card-group").append($(content));
+        //這裏有空可以做星期
+      }
       var week = ['一','二','三','四','五','六','日'];
 
-      $.each(week,function(day, value){
-        var content = `<div class="card"><div class="card-header text-center">
-          <h5>${value}</h5>
-        </div><div class="card-body">
-          <h4 class="card-title">Hello</h4>
-          <img src="" alt="">
-        </div></div>`;
-        $(".card-group").append($(content));
-        console.log(value);
-      })
+
       
 
     })

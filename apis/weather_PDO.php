@@ -98,6 +98,14 @@ class cwbPDO extends PDO{
         return $rows;
     }
 
+    public function get($table, $sql){
+        $stmt = self::$DB->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $rows;
+    }
+
 
 
 
