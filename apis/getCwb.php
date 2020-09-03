@@ -20,7 +20,7 @@ if(isset($_GET['location'])){
         getData_Week($table[0],$location);
     }
     else if($_GET['type'] == '72h'){
-
+        getData_72h($table[1],$location);
     }
 }
 
@@ -68,6 +68,20 @@ function getData_Week($table,$location){
     echo (json_encode($rows));
 }
 
+function getData_72h($table,$location){
+    $pod = new cwbPDO();
+    $sql = <<<sql
+    SELECT DATE_FORMAT(dataTime, '%d日%H時') as 'dataTime', GROUP_CONCAT(concat('"',`elementName`,'"',':"',`value`,'"') separator ',')as 'data' 
+    FROM (SELECT * FROM `$table` WHERE location = '$location' and DATE(dataTime) BETWEEN CURDATE() AND CURDATE() +1 
+    ORDER BY `dataTime`,id) as t GROUP BY `dataTime` LIMIT 8
+    sql;
+    $rows = $pod->get($table,$sql);
+    foreach($rows as $k => $v){
+        $rows[$k]['data'] = "{".$rows[$k]['data']."}";
+    }    
+
+    echo (json_encode($rows));
+}
 
 // cut api data
 function getJson($url,$table){
