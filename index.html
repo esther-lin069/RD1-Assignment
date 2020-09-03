@@ -134,8 +134,9 @@
       //var week = ['一','二','三','四','五','六','日'];
 
       function setDayChart(timeList,TList,ATList){
+        //取陣列中的最小值
+        var CminT = Math.min(...TList);
 
-        // Lab 練習的程式寫在這裡
         var ctx = document.getElementById("chartCanvas");
         var labChart = new Chart(ctx,{
             type: "line",
@@ -161,7 +162,49 @@
                         borderWidth: 1
                     }
                 ]
+            },
+            options: {
+              title: {
+                  display: true,
+                  text: '今明溫度曲線'
+              },
+              "animation": {
+                "duration": 600,
+                "onComplete": function() {
+                  var chartInstance = this.chart,
+                    ctx = chartInstance.ctx;
+
+                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+
+                  this.data.datasets.forEach(function(dataset, i) {
+                    var meta = chartInstance.controller.getDatasetMeta(i);
+                    meta.data.forEach(function(bar, index) {
+                      var data = dataset.data[index];
+                      ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                    });
+                  });
+                }
+              },
+              scales: { 
+                xAxes: [{ 
+                gridLines: { 
+                  show: true, 
+                  color: "F3F3F3", 
+                } 
+                }], 
+                yAxes: [{ 
+                  ticks: { 
+                    suggestedMin: CminT-5,
+                    suggestedMax: 45,
+                    stepSize: 5
+                  } 
+                }] 
+              }, 
             }
+            
+            
         })
       }
 
