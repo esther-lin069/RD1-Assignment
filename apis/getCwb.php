@@ -214,9 +214,7 @@ function getRain($data){
         foreach($location['weatherElement'] as $weather){
 
             if($weather["elementName"] == 'RAIN'){
-                if($weather["elementValue"] == "-998.00"){
-                    $weather["elementValue"] = null;
-                }
+                
                 $list["hour"] = $weather["elementValue"];
             }
             else{
