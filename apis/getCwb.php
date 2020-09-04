@@ -4,10 +4,11 @@ header("Content-Type:text/html; charset=utf-8");
 require('weather_PDO.php');
 
 
-$table = ['weather_week','weather_72h'];
+$table = ['weather_week','weather_72h','rain'];
 $url = array(
     0 => 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-ED7050C5-A1A2-4409-B999-A4CCC6F4AFBB&elementName=MinT,MaxT,Wx,PoP12h',
-    1 => 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=CWB-ED7050C5-A1A2-4409-B999-A4CCC6F4AFBB&elementName=Wx,T,AT,PoP6h'
+    1 => 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=CWB-ED7050C5-A1A2-4409-B999-A4CCC6F4AFBB&elementName=Wx,T,AT,PoP6h',
+    2 => 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0002-001?Authorization=CWB-ED7050C5-A1A2-4409-B999-A4CCC6F4AFBB&elementName=HOUR_24,RAIN&parameterName=CITY'
 );
 
 
@@ -22,12 +23,15 @@ if(isset($_GET['location'])){
     else if($_GET['type'] == '72h'){
         getData_72h($table[1],$location);
     }
+    else if($_GET['type'] == 'rain'){
+        getData_rain($table[2],$location);
+    }
 }
 
 
 //main function
 //updateData();
-
+getJson($url[2],$table[2]);
 
 
 
@@ -98,7 +102,10 @@ function getJson($url,$table){
             $data_location = $data['records']['locations'][0]['location'];
             getWeatherThreeDays($data_location);
         break;
-
+        case 'rain':
+            $data_location = $data['records']["location"];
+            getRain($data_location);
+        break;
         default:
             echo ("No such function");
 
@@ -188,6 +195,41 @@ function getWeatherThreeDays($data){
         //echo "<hr>";
         $list = array();
         
+    }
+}
+
+function getRain($data){
+    global $table;
+    $list = [];
+    //var_dump($data);
+
+    foreach($data as $location){
+
+        $t = array(
+            "city" => $location['parameter'][0]["parameterValue"],
+            "location" => $location['locationName']
+        );
+        $list = $t;
+        
+        foreach($location['weatherElement'] as $weather){
+
+            if($weather["elementName"] == 'RAIN'){
+                if($weather["elementValue"] == "-998.00"){
+                    $weather["elementValue"] = null;
+                }
+                $list["hour"] = $weather["elementValue"];
+            }
+            else{
+                $list["day"] = $weather["elementValue"];
+            }
+            
+            
+        }
+        addData($table[2],$list);
+        print_r($list);
+        $list = array();
+        echo "<br>";
+
     }
 }
 
