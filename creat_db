@@ -1,0 +1,126 @@
+-- phpMyAdmin SQL Dump
+-- version 5.0.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:8889
+-- Generation Time: Sep 04, 2020 at 05:43 PM
+-- Server version: 5.7.26
+-- PHP Version: 7.4.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `RD1-Assignment`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rain`
+--
+
+CREATE TABLE `rain` (
+  `id` int(20) NOT NULL,
+  `city` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `location` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `hour` float DEFAULT NULL,
+  `day` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `taiwan_citys`
+--
+
+CREATE TABLE `taiwan_citys` (
+  `id` int(3) NOT NULL,
+  `city` varchar(10) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weather_72h`
+--
+
+CREATE TABLE `weather_72h` (
+  `id` int(10) NOT NULL,
+  `location` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `elementName` enum('PoP6h','Wx','T','AT') COLLATE utf8_unicode_ci NOT NULL,
+  `dataTime` timestamp NULL DEFAULT NULL,
+  `value` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weather_week`
+--
+
+CREATE TABLE `weather_week` (
+  `id` int(10) NOT NULL,
+  `location` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `elementName` enum('PoP12h','Wx','MinT','MaxT') COLLATE utf8_unicode_ci NOT NULL,
+  `Date` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Time` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `value` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `rain`
+--
+ALTER TABLE `rain`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `taiwan_citys`
+--
+ALTER TABLE `taiwan_citys`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `weather_72h`
+--
+ALTER TABLE `weather_72h`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `weather_week`
+--
+ALTER TABLE `weather_week`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_week_Date` (`Date`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `rain`
+--
+ALTER TABLE `rain`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `taiwan_citys`
+--
+ALTER TABLE `taiwan_citys`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `weather_72h`
+--
+ALTER TABLE `weather_72h`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `weather_week`
+--
+ALTER TABLE `weather_week`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
