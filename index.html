@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <META HTTP-EQUIV="pragma" CONTENT="no-cache">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="scss/main.css">
+    
 
     <!-- icons -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
@@ -27,6 +27,8 @@
     <!-- chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 
+
+    <link rel="stylesheet" href="scss/main.css?v=<?=time()?>">
     <title>Weather</title>
 </head>
 <body>
@@ -86,12 +88,19 @@
     <!-- chart -->
     <div class="row">
       <div class="col-sm-5">
-
+        <section class="weatherBox">
+          <div id="weather-content">
+            <h4 id=box-location>location</h4>
+            <p id="box-dataTime"></p>
+            <h1 id="box-t"></h1>
+            <p id="box-wx"></p>
+            <i class="fa fa-umbrella"></i>&nbsp;<span id="box-rain"></span>
+          </div>
+        </section>
       </div>
-      <div class="col-sm-7">
-          <!-- 統計圖畫在這裡 -->
+      <div class="col-sm-7">   
         <div id="chart">
-          <canvas id="chartCanvas"></canvas>
+          <canvas id="chartCanvas"><!-- 統計圖畫在這裡 --></canvas>
         </div>
         <div class="pop">
           <table>
@@ -134,8 +143,24 @@
       function changCity(city){
         getWeek(city);
         getTwoDays(city);
+        setNow(city);
       }
       
+      function setNow(location){
+        $.get(`http://localhost/RD1-Assignment/apis/getCwb.php?location=${location}&type=now`,function(result){
+          var obj = JSON.parse(result);
+          var data = JSON.parse("{"+ obj.data + "}");
+
+          $("#box-location").text(location);
+          $("#box-dataTime").text(obj.dataTime);
+          $("#box-t").text(data['T'] + "°C");
+          $("#box-wx").text(data['Wx']);
+          $("#box-rain").text(data['PoP6h']);
+
+          var imgUrl = `http://localhost/RD1-Assignment/images/${location}.jpg`;
+          $(".weatherBox").css('background-image',"url(" + imgUrl + ")");
+        })
+      }
 
       function getWeek(location){
         $.get(`http://localhost/RD1-Assignment/apis/getCwb.php?location=${location}&type=week`,function(result){

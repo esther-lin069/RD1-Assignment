@@ -13,7 +13,38 @@
     }
     
 }
+.weatherBox {
+    &{
+        margin-bottom: 30px;
+    }
 
-body{
-    color: #000;
+    position: relative;
+    min-height: 50vh;
+    //background-image: url();
+    background-size: cover;
+    border-radius: 0.5em;
+    display: flex;
+    padding: 30px;
+
+    #weather-content{
+        color: white;
+    }
+  
+}
+
+.weatherBox:after {
+    content: "";  // :before and :after both require content
+    position: absolute;
+    border-radius: 0.5em;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(120deg,#e76395,#33d0ff);
+    background-color: #333;
+    opacity: .5;
+}
+
+.weatherBox > * {
+    z-index: 100;
 }

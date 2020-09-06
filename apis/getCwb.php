@@ -26,6 +26,9 @@ if(isset($_GET['location'])){
     else if($_GET['type'] == 'rain'){
         //getData_rain($table[2],$location);
     }
+    else if($_GET['type'] == 'now'){
+        getNow($location);
+    }
 }
 
 
@@ -76,7 +79,7 @@ function getData_72h($table,$location){
     $pod = new cwbPDO();
     $sql = <<<sql
     SELECT DATE_FORMAT(dataTime, '%d日%H時') as 'dataTime', GROUP_CONCAT(concat('"',`elementName`,'"',':"',`value`,'"') separator ',')as 'data' 
-    FROM (SELECT * FROM `$table` WHERE location = '$location' and DATE(dataTime) BETWEEN CURDATE() AND CURDATE() +1 
+    FROM (SELECT * FROM `$table` WHERE location = '$location' and dataTime BETWEEN NOW() AND CURDATE() +2 
     ORDER BY `dataTime`,id) as t GROUP BY `dataTime` LIMIT 8
     sql;
     $rows = $pod->get($table,$sql);
@@ -85,6 +88,18 @@ function getData_72h($table,$location){
     }    
 
     echo (json_encode($rows));
+}
+
+function getNow($location){
+    $pod = new cwbPDO();
+    $sql = <<<sql
+    SELECT DATE_FORMAT(dataTime, '%W %H:%i') as 'dataTime', GROUP_CONCAT(concat('"',`elementName`,'"',':"',`value`,'"') separator ',')as 'data' 
+    FROM (SELECT * FROM `weather_72h` WHERE location = '$location' and dataTime BETWEEN DATE_ADD(NOW(),INTERVAL -3 HOUR) AND NOW()
+    ORDER BY `dataTime`,id) as t GROUP BY `dataTime`
+    sql;
+    $row = $pod->get('weather_72h',$sql);
+
+    echo json_encode($row[0]);
 }
 
 // cut api data
