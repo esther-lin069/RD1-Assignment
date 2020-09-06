@@ -24,10 +24,15 @@ if(isset($_GET['location'])){
         getData_72h($table[1],$location);
     }
     else if($_GET['type'] == 'rain'){
-        //getData_rain($table[2],$location);
+        getData_rain($table[2],$location);
     }
     else if($_GET['type'] == 'now'){
         getNow($location);
+    }
+}
+else{
+    if(isset($_GET['update'])){
+        updateData();
     }
 }
 
@@ -100,6 +105,13 @@ function getNow($location){
     $row = $pod->get('weather_72h',$sql);
 
     echo json_encode($row[0]);
+}
+
+function getData_rain($table,$location){
+    $pod = new cwbPDO();
+    $rows = $pod->all($table,'`location`,`hour`,`day`',"`city` = '$location'");
+
+    echo json_encode($rows);
 }
 
 // cut api data
@@ -239,9 +251,9 @@ function getRain($data){
             
         }
         addData($table[2],$list);
-        print_r($list);
+        //print_r($list);
         $list = array();
-        echo "<br>";
+        //echo "<br>";
 
     }
 }

@@ -3,9 +3,12 @@
     table-layout:fixed;
 
     table{
-        width: inherit;
+        margin-left: 2%;
+        width: 102%;
         td {
+            //border: 1px #333 solid;
             border: none;
+            width: 25%;
             i{
                 color: #333;
             }
@@ -47,4 +50,12 @@
 
 .weatherBox > * {
     z-index: 100;
+}
+
+.week-card{
+    .card-header{
+        background-color: #cec7e0;
+        color: #333;
+    }
+    max-width: 18rem;
 }

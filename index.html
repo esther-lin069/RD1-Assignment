@@ -40,8 +40,12 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <button id="btn-update" type="button" class="btn btn-outline-info">更新資料</button>
           <li class="nav-item active">
+        </ul>
+        <ul class="navbar-nav ml-auto">
             <a class="nav-link" href="#">首頁
               <span class="sr-only">(current)</span>
             </a>
@@ -77,6 +81,7 @@
           <option value="嘉義縣">嘉義縣</option>
           <option value="嘉義市">嘉義市</option>
         </select>
+        
       </div>
     </div>
 </nav>
@@ -115,6 +120,26 @@
     <div class="card-group">     
     </div>
     <!-- cards end -->
+    <div id="rain">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">區域名稱</th>
+            <th scope="col">過去 1H 雨量</th>
+            <th scope="col">過去 24H 累計雨量</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </main>
 
@@ -132,6 +157,10 @@
       //   $("#citys").append($(o));
       // }
       
+      $("#btn-update").click(function(){
+        $.get("http://localhost/RD1-Assignment/apis/getCwb.php?update=1");
+      })
+
       $("#citys").change(function(){
         $(".pop table").empty();
         $(".card-group").empty();
@@ -143,7 +172,27 @@
       function changCity(city){
         getWeek(city);
         getTwoDays(city);
-        setNow(city);
+        //setNow(city);
+        setRain(city);
+      }
+
+      function setRain(location){
+        $.get(`http://localhost/RD1-Assignment/apis/getCwb.php?location=${location}&type=rain`,function(result){
+          var obj = JSON.parse(result);
+          console.log(result);
+
+          for(let v in obj){
+          $("#rain table tbody").append($(`<tr>
+          <th scope="row">0</th>
+          <td>${v.location}</td>
+          <td>${v.hour}</td>
+          <td>${v.day}</td>
+          </tr>`));
+
+          }
+
+        })
+        
       }
       
       function setNow(location){
@@ -198,7 +247,7 @@
       
 
       function setWeek (day,data){
-        var content = `<div class="card"><div class="card-header text-center">
+        var content = `<div class="card border-secondary week-card"><div class="card-header text-center">
           <h5>${day}</h5>
         </div><div class="card-body">
           <h5 class="card-title"></h5>
@@ -250,7 +299,7 @@
                 ]
             },
             options: {
-              //hover: {animationDuration: 0},
+              hover: {animationDuration: 0},
               title: {
                   display: true,
                   text: '今明溫度曲線'

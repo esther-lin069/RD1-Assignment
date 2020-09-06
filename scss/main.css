@@ -4,11 +4,13 @@
 }
 
 .pop table {
-  width: inherit;
+  margin-left: 2%;
+  width: 102%;
 }
 
 .pop table td {
   border: none;
+  width: 25%;
 }
 
 .pop table td i {
@@ -49,5 +51,14 @@
 
 .weatherBox > * {
   z-index: 100;
+}
+
+.week-card {
+  max-width: 18rem;
+}
+
+.week-card .card-header {
+  background-color: #cec7e0;
+  color: #333;
 }
 /*# sourceMappingURL=main.css.map */
