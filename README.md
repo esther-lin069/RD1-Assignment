@@ -1,7 +1,6 @@
 # RD1-Assignment
 
-### (temp)主資料夾 public / php_files
-
+### 主檔案:index & apis/
 
 * 存取氣象局api
 
