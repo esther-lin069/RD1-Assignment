@@ -3,7 +3,7 @@
 class cwbPDO extends PDO{
     public static $dbtype = 'mysql';
     public static $dbhost = 'localhost';
-    public static $dbport = 8889;
+    public static $dbport = 3306;
     public static $dbname = 'RD1-Assignment';
     public static $dbuser = 'root';
     public static $dbpass = 'root';

@@ -90,7 +90,9 @@
       </div>
       <div class="col-sm-7">
           <!-- 統計圖畫在這裡 -->
-        <canvas id="chartCanvas"></canvas>
+        <div id="chart">
+          <canvas id="chartCanvas"></canvas>
+        </div>
         <div class="pop">
           <table>
             <tr>
@@ -126,6 +128,7 @@
         $(".card-group").empty();
         $location = $("#citys").val();        
         changCity($location);
+
       })
 
       function changCity(city){
@@ -135,7 +138,7 @@
       
 
       function getWeek(location){
-        $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=week`,function(result){
+        $.get(`http://localhost/RD1-Assignment/apis/getCwb.php?location=${location}&type=week`,function(result){
           var obj = JSON.parse(result);
 
           for(let days in obj){
@@ -147,7 +150,7 @@
       }
 
       function getTwoDays(location){
-        $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=72h`,function(result){
+        $.get(`http://localhost/RD1-Assignment/apis/getCwb.php?location=${location}&type=72h`,function(result){
           var obj = JSON.parse(result);
           var timeList = [];
           var TList = [];
@@ -162,8 +165,9 @@
             if(data['PoP6h'] !== undefined)
               setPoP6h(data['PoP6h']);
           }
-          //console.log(ATList);
+          $("#chart").empty();
           setDayChart(timeList,TList,ATList);
+
         })
       }
       
@@ -191,8 +195,11 @@
         //取陣列中的最小值
         var CminT = Math.min(...TList);
 
+        
+        $("#chart").append($(`<canvas id="chartCanvas"></canvas>`));
         var ctx = document.getElementById("chartCanvas");
-        var labChart = new Chart(ctx,{
+
+        var WeatherChart = new Chart(ctx,{
             type: "line",
             data: {
                 labels: timeList,
@@ -218,7 +225,7 @@
                 ]
             },
             options: {
-              hover: {animationDuration: 0},
+              //hover: {animationDuration: 0},
               title: {
                   display: true,
                   text: '今明溫度曲線'

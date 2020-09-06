@@ -24,14 +24,14 @@ if(isset($_GET['location'])){
         getData_72h($table[1],$location);
     }
     else if($_GET['type'] == 'rain'){
-        getData_rain($table[2],$location);
+        //getData_rain($table[2],$location);
     }
 }
 
 
 //main function
 //updateData();
-getJson($url[2],$table[2]);
+//getJson($url[2],$table[2]);
 
 
 
