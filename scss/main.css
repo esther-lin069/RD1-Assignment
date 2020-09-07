@@ -52,10 +52,12 @@
 
 .week-card {
   max-width: 18rem;
+  background: rgba(238, 238, 238, 0.372);
 }
 
 .rain-table {
   margin-bottom: 50vh;
+  background: rgba(238, 238, 238, 0.372);
 }
 
 .title {

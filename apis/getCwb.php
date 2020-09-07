@@ -109,8 +109,8 @@ function getNow($location){
     $pod = new cwbPDO();
     $sql = <<<sql
     SELECT DATE_FORMAT(dataTime, '%W %H:%i') as 'dataTime', GROUP_CONCAT(concat('"',`elementName`,'"',':"',`value`,'"') separator ',')as 'data' 
-    FROM (SELECT * FROM `weather_72h` WHERE location = '$location' 
-    ORDER BY `dataTime`,id) as t GROUP BY `dataTime` limit 1
+    FROM (SELECT * FROM `weather_72h` WHERE location = '$location' and dataTime BETWEEN (SELECT MIN(dataTime) FROM `weather_72h`) AND DATE_ADD(CURTIME(), INTERVAL 1.5 HOUR) ) as t  
+    GROUP BY `dataTime` ORDER BY `dataTime` DESC LIMIT 1
     sql;
     $row = $pod->get('weather_72h',$sql);
 

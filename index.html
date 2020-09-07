@@ -132,7 +132,7 @@
       </div>
       <table class="table table-hover table-sm rain-table">
         <thead>
-          <tr>
+          <tr class="table-secondary">
             <th scope="col"></th>
             <th scope="col">區域名稱</th>
             <th scope="col">過去 1H 雨量</th>
@@ -280,6 +280,9 @@
 
       function setWeek (day,data){
         var wx = getWxImg(data['Wx'].split(",")[1]);
+        if(wx > 29){
+          wx = 29;
+        }
         var wximg = `http://localhost:8888/RD1-Assignment/images/${wx}`;
         var content = `<div class="card border-secondary week-card ">
           <div class="card-body text-center">
