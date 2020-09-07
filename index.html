@@ -172,12 +172,12 @@
       function changCity(city){
         getWeek(city);
         getTwoDays(city);
-        //setNow(city);
+        setNow(city);
         setRain(city);
       }
 
       function setRain(location){
-        $.get(`http://localhost/RD1-Assignment/apis/getCwb.php?location=${location}&type=rain`,function(result){
+        $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=rain`,function(result){
           var obj = JSON.parse(result);
           console.log(result);
 
@@ -196,7 +196,7 @@
       }
       
       function setNow(location){
-        $.get(`http://localhost/RD1-Assignment/apis/getCwb.php?location=${location}&type=now`,function(result){
+        $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=now`,function(result){
           var obj = JSON.parse(result);
           var data = JSON.parse("{"+ obj.data + "}");
 
@@ -206,13 +206,13 @@
           $("#box-wx").text(data['Wx']);
           $("#box-rain").text(data['PoP6h']);
 
-          var imgUrl = `http://localhost/RD1-Assignment/images/${location}.jpg`;
+          var imgUrl = `http://localhost:8888/RD1-Assignment/images/${location}.jpg`;
           $(".weatherBox").css('background-image',"url(" + imgUrl + ")");
         })
       }
 
       function getWeek(location){
-        $.get(`http://localhost/RD1-Assignment/apis/getCwb.php?location=${location}&type=week`,function(result){
+        $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=week`,function(result){
           var obj = JSON.parse(result);
 
           for(let days in obj){
@@ -224,7 +224,7 @@
       }
 
       function getTwoDays(location){
-        $.get(`http://localhost/RD1-Assignment/apis/getCwb.php?location=${location}&type=72h`,function(result){
+        $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=72h`,function(result){
           var obj = JSON.parse(result);
           var timeList = [];
           var TList = [];
