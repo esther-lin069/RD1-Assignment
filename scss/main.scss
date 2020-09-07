@@ -50,10 +50,11 @@
 }
 
 .week-card{
-    .card-header{
-        background-color: #cec7e0;
-        color: #333;
-    }
+    // .card-header{
+    //     background-color: #cec7e0;
+    //     color: #333;
+    //     height: 15px;
+    // }
     max-width: 18rem;
 }
 
@@ -65,4 +66,9 @@
     text-align: center;
     margin-top: 60px;
     margin-bottom: 20px;
+}
+
+.wx-img{
+    width: 10px;
+    height: 10px;
 }

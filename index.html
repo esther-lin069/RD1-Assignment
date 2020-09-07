@@ -198,6 +198,8 @@
           var obj = JSON.parse(result);
 
           $.each(obj, function(index, value) {
+            if(value.hour < -990)
+              value.hour = "-";
             //console.log(value);
             $("#rain table tbody").append($(`<tr>
             <th scope="row">${parseInt(index)+1}</th>
@@ -278,14 +280,20 @@
 
       function setWeek (day,data){
         var wx = getWxImg(data['Wx'].split(",")[1]);
-        var content = `<div class="card border-secondary week-card"><div class="card-header text-center">
-          <h5>${day}</h5>
-        </div><div class="card-body">
-          <h5 class="card-title"></h5>
-          <img src="" alt="${wx}">
-          <p class="card-text">${data['Wx'].split(",")[0]}<br>${data['MinT']}-${data['MaxT']}<br>${data['PoP12h']}</p>
-        </div></div>`;
+        var wximg = `http://localhost:8888/RD1-Assignment/images/${wx}`;
+        var content = `<div class="card border-secondary week-card ">
+          <div class="card-body text-center">
+            <h5 class="card-title">${day}</h5>
+            <img style="width:60px;margin-bottom:15px;" src="${wximg}" alt="${wx}">
+            <p class="card-text">
+              <p style="font-size:10pt;">${data['Wx'].split(",")[0]}</p>
+              <span>${data['MinT']} - ${data['MaxT']}°C</sapn><br>
+              <span>${data['PoP12h']}％</sapn>
+            </p>
+          </div>
+        </div>`;
           $(".card-group").append($(content));
+
         //這裏有空可以做星期
       }
       //var week = ['一','二','三','四','五','六','日'];

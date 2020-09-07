@@ -94,7 +94,7 @@ function getData_72h($table,$location){
     $pod = new cwbPDO();
     $sql = <<<sql
     SELECT DATE_FORMAT(dataTime, '%d日%H時') as 'dataTime', GROUP_CONCAT(concat('"',`elementName`,'"',':"',`value`,'"') separator ',')as 'data' 
-    FROM (SELECT * FROM `$table` WHERE location = '$location' and dataTime BETWEEN NOW() AND CURDATE() +2 
+    FROM (SELECT * FROM `$table` WHERE location = '$location' and dataTime BETWEEN DATE_SUB(NOW(),INTERVAL 3 HOUR) AND CURDATE() +2 
     ORDER BY `dataTime`,id) as t GROUP BY `dataTime` LIMIT 8
     sql;
     $rows = $pod->get($table,$sql);
