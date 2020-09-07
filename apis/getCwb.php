@@ -39,7 +39,7 @@ else{
 
 //main function
 //updateData();
-//getJson($url[2],$table[2]);
+//getJson($url[0],$table[0]);
 
 
 
@@ -99,8 +99,8 @@ function getNow($location){
     $pod = new cwbPDO();
     $sql = <<<sql
     SELECT DATE_FORMAT(dataTime, '%W %H:%i') as 'dataTime', GROUP_CONCAT(concat('"',`elementName`,'"',':"',`value`,'"') separator ',')as 'data' 
-    FROM (SELECT * FROM `weather_72h` WHERE location = '$location' and dataTime BETWEEN DATE_ADD(NOW(),INTERVAL -3 HOUR) AND NOW()
-    ORDER BY `dataTime`,id) as t GROUP BY `dataTime`
+    FROM (SELECT * FROM `weather_72h` WHERE location = '$location' 
+    ORDER BY `dataTime`,id) as t GROUP BY `dataTime` limit 1
     sql;
     $row = $pod->get('weather_72h',$sql);
 
@@ -159,19 +159,25 @@ function getWeatherWeek($data){
                 $list['Date'] = date_format($date,"m/d");
                 $list['Time'] = date_format($date,"H:i");
 
-                foreach($time['elementValue'] as $value){
-                    $v = $value['value'];
-                    if($v == " ")
-                        $v= '-';
-                    
-                    $list['value'] = $v;
-
-                    //do upload here
-                    addData($table[0],$list);
-                    //var_dump($list);
-                    //echo "<br>";                
-                break;
+                if($list['elementName'] == 'Wx'){
+                    $v = [];
+                    foreach($time['elementValue'] as $value){
+                        array_push($v,$value['value']);
+                    }
+                    $list['value'] = implode(",",$v);
                 }
+                else{
+                    foreach($time['elementValue'] as $value){
+                        $v = $value['value'];
+                        if($v == " ")
+                            $v= '-';
+                        $list['value'] = $v;
+
+                    }
+                }
+                //do upload here
+                addData($table[0],$list);
+                
                 
             }
             

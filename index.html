@@ -268,8 +268,8 @@
           <h5>${day}</h5>
         </div><div class="card-body">
           <h5 class="card-title"></h5>
-          <img src="" alt="">
-          <p class="card-text">${data['Wx']}<br>${data['MinT']}-${data['MaxT']}<br>${data['PoP12h']}</p>
+          <img src="" alt="${data['Wx'].split(",")[1]}">
+          <p class="card-text">${data['Wx'].split(",")[0]}<br>${data['MinT']}-${data['MaxT']}<br>${data['PoP12h']}</p>
         </div></div>`;
           $(".card-group").append($(content));
         //這裏有空可以做星期
