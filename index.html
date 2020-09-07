@@ -124,6 +124,12 @@
     <!-- cards end -->
     <div id="rain">
       <h5 class="title">各區域雨量觀測數據</h5>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-default">搜尋</span>
+        </div>
+        <input id="rain-search" type="text" class="form-control">
+      </div>
       <table class="table table-hover table-sm rain-table">
         <thead>
           <tr>
@@ -171,6 +177,13 @@
         $location = $("#citys").val();        
         changCity($location);
 
+      })
+
+      $("#rain-search").on("keyup",function(){
+        var value = $(this).val();
+        $(".rain-table tbody tr").filter(function(){
+          $(this).toggle($(this).text().indexOf(value) > -1)
+        })
       })
 
       function changCity(city){
