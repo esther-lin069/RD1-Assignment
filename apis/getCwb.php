@@ -109,7 +109,7 @@ function getNow($location){
 
 function getData_rain($table,$location){
     $pod = new cwbPDO();
-    $rows = $pod->all($table,'`location`,`hour`,`day`',"`city` = '$location'");
+    $rows = $pod->all($table,'`stationId`,`location`,`hour`,`day`',"`city` = '$location'");
 
     echo json_encode($rows);
 }
@@ -233,6 +233,7 @@ function getRain($data){
     foreach($data as $location){
 
         $t = array(
+            "stationId" => $location['stationId'],
             "city" => $location['parameter'][0]["parameterValue"],
             "location" => $location['locationName']
         );

@@ -103,7 +103,8 @@
           </div>
         </section>
       </div>
-      <div class="col-sm-7">   
+      <div class="col-sm-7">
+        <h5 class="title">今明溫度與降雨機率</h5>   
         <div id="chart">
           <canvas id="chartCanvas"><!-- 統計圖畫在這裡 --></canvas>
         </div>
@@ -117,17 +118,20 @@
       </div>
     </div>
     <!-- weeks card -->
+    <h5 class="title">一週白天天氣預報</h5>
     <div class="card-group">     
     </div>
     <!-- cards end -->
     <div id="rain">
-      <table class="table table-sm">
+      <h5 class="title">各區域雨量觀測數據</h5>
+      <table class="table table-hover table-sm rain-table">
         <thead>
           <tr>
             <th scope="col"></th>
             <th scope="col">區域名稱</th>
             <th scope="col">過去 1H 雨量</th>
             <th scope="col">過去 24H 累計雨量</th>
+            <th scope="col">測站代號</th>
           </tr>
         </thead>
         <tbody>
@@ -145,6 +149,10 @@
 
       
       changCity('臺中市');
+
+      //調整nowBox的尺寸為正方
+      var cw = $(".weatherBox").width();
+      $(".weatherBox").css({'height': cw +'px'});
       //這裡不知道為什麼用不了
       // var test = ['123','456','789'];
       // for(var t in test){
@@ -153,7 +161,7 @@
       // }
       
       $("#btn-update").click(function(){
-        $.get("http://localhost/RD1-Assignment/apis/getCwb.php?update=1");
+        $.get("http://localhost:8888/RD1-Assignment/apis/getCwb.php?update=1");
       })
 
       $("#citys").change(function(){
@@ -169,22 +177,23 @@
         getWeek(city);
         getTwoDays(city);
         setNow(city);
-        setRain(city);
+        getRain(city);
       }
 
-      function setRain(location){
+      function getRain(location){
         $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=rain`,function(result){
           var obj = JSON.parse(result);
 
-          for(var v in obj){
+          $.each(obj, function(index, value) {
+            //console.log(value);
             $("#rain table tbody").append($(`<tr>
-            <th scope="row">${parseInt(v)+1}</th>
-            <td>${obj[v].location}</td>
-            <td>${obj[v].hour}</td>
-            <td>${obj[v].day}</td>
+            <th scope="row">${parseInt(index)+1}</th>
+            <td>${value.location}</td>
+            <td>${value.hour}</td>
+            <td>${value.day}</td>
+            <td>${value.stationId}</td>
             </tr>`));
-
-          }
+          }); 
 
         })
         
@@ -295,10 +304,10 @@
             },
             options: {
               hover: {animationDuration: 0},
-              title: {
-                  display: true,
-                  text: '今明溫度曲線'
-              },
+              // title: {
+              //     display: true,
+              //     text: '今明溫度曲線'
+              // },
               "animation": {
                 "duration": 600,
                 "onComplete": function() {

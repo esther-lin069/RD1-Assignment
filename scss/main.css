@@ -19,17 +19,14 @@
 
 .weatherBox {
   position: relative;
-  min-height: 35vh;
+  top: 60px;
+  width: 100%;
   background-size: cover;
   border-radius: 0.5em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   padding: 30px;
-}
-
-.weatherBox {
-  margin-bottom: 30px;
 }
 
 .weatherBox #weather-content {
@@ -60,5 +57,10 @@
 .week-card .card-header {
   background-color: #cec7e0;
   color: #333;
+}
+
+.title {
+  text-align: center;
+  margin-top: 60px;
 }
 /*# sourceMappingURL=main.css.map */

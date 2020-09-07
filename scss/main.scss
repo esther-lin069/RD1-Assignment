@@ -17,13 +17,10 @@
     
 }
 .weatherBox {
-    &{
-        margin-bottom: 30px;
-    }
 
     position: relative;
-    min-height: 35vh;
-    //background-image: url();
+    top: 60px;
+    width: 100%;
     background-size: cover;
     border-radius: 0.5em;
     display: flex;
@@ -58,4 +55,13 @@
         color: #333;
     }
     max-width: 18rem;
+}
+
+.rain-table{
+    
+}
+
+.title{
+    text-align: center;
+    margin-top: 60px;
 }
