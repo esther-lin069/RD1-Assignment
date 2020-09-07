@@ -131,12 +131,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
+          <!-- rain -->
         </tbody>
       </table>
     </div>
@@ -164,6 +159,7 @@
       $("#citys").change(function(){
         $(".pop table").empty();
         $(".card-group").empty();
+        $("#rain table tbody").empty();
         $location = $("#citys").val();        
         changCity($location);
 
@@ -179,15 +175,14 @@
       function setRain(location){
         $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=rain`,function(result){
           var obj = JSON.parse(result);
-          console.log(result);
 
-          for(let v in obj){
-          $("#rain table tbody").append($(`<tr>
-          <th scope="row">0</th>
-          <td>${v.location}</td>
-          <td>${v.hour}</td>
-          <td>${v.day}</td>
-          </tr>`));
+          for(var v in obj){
+            $("#rain table tbody").append($(`<tr>
+            <th scope="row">${parseInt(v)+1}</th>
+            <td>${obj[v].location}</td>
+            <td>${obj[v].hour}</td>
+            <td>${obj[v].day}</td>
+            </tr>`));
 
           }
 
