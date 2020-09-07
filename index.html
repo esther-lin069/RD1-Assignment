@@ -262,13 +262,27 @@
         })
       }
       
+      function getWxImg(id){
+        var img = null;
+        $.ajax({
+          type: "get",
+          url: `http://localhost:8888/RD1-Assignment/apis/getCwb.php?img-id=${id}`,
+          async : false,
+          success: function(result){
+            img =  result;
+          }
+        })
+        return img;
+
+      }
 
       function setWeek (day,data){
+        var wx = getWxImg(data['Wx'].split(",")[1]);
         var content = `<div class="card border-secondary week-card"><div class="card-header text-center">
           <h5>${day}</h5>
         </div><div class="card-body">
           <h5 class="card-title"></h5>
-          <img src="" alt="${data['Wx'].split(",")[1]}">
+          <img src="" alt="${wx}">
           <p class="card-text">${data['Wx'].split(",")[0]}<br>${data['MinT']}-${data['MaxT']}<br>${data['PoP12h']}</p>
         </div></div>`;
           $(".card-group").append($(content));

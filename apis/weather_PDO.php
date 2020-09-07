@@ -109,6 +109,7 @@ class cwbPDO extends PDO{
 
 
 
+
 }
 
 // $data = [ 'location' => '雲林縣',

@@ -34,6 +34,9 @@ else{
     if(isset($_GET['update'])){
         updateData();
     }
+    if(isset($_GET['img-id'])){
+        getWxImg($_GET['img-id']);
+    }
 }
 
 
@@ -78,6 +81,13 @@ function getData_Week($table,$location){
     }    
 
     echo (json_encode($rows));
+}
+
+function getWxImg($id){
+    $pod = new cwbPDO();
+    $row = $pod->all('wx_img','`img`',"`id` = '$id'");
+
+    print_r($row[0]['img']);
 }
 
 function getData_72h($table,$location){
