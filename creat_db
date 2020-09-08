@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Sep 04, 2020 at 05:43 PM
+-- Generation Time: Sep 08, 2020 at 04:15 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.4.2
 
@@ -13,6 +13,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `RD1-Assignment`
 --
+CREATE DATABASE IF NOT EXISTS `RD1-Assignment` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `RD1-Assignment`;
 
 -- --------------------------------------------------------
 
@@ -22,6 +24,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `rain` (
   `id` int(20) NOT NULL,
+  `stationId` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `city` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `location` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `hour` float DEFAULT NULL,
@@ -39,6 +42,34 @@ CREATE TABLE `taiwan_citys` (
   `city` varchar(10) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `taiwan_citys`
+--
+
+INSERT INTO `taiwan_citys` (`id`, `city`) VALUES
+(1, '雲林縣'),
+(2, '南投縣'),
+(3, '連江縣'),
+(4, '臺東縣'),
+(5, '金門縣'),
+(6, '宜蘭縣'),
+(7, '屏東縣'),
+(8, '苗栗縣'),
+(9, '澎湖縣'),
+(10, '臺北市'),
+(11, '新竹縣'),
+(12, '花蓮縣'),
+(13, '高雄市'),
+(14, '彰化縣'),
+(15, '新竹市'),
+(16, '新北市'),
+(17, '基隆市'),
+(18, '臺中市'),
+(19, '臺南市'),
+(20, '桃園市'),
+(21, '嘉義縣'),
+(22, '嘉義市');
+
 -- --------------------------------------------------------
 
 --
@@ -50,7 +81,7 @@ CREATE TABLE `weather_72h` (
   `location` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `elementName` enum('PoP6h','Wx','T','AT') COLLATE utf8_unicode_ci NOT NULL,
   `dataTime` timestamp NULL DEFAULT NULL,
-  `value` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+  `value` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -67,6 +98,52 @@ CREATE TABLE `weather_week` (
   `Time` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wx_img`
+--
+
+CREATE TABLE `wx_img` (
+  `id` int(2) NOT NULL,
+  `img` enum('sun.png','sun_cloudy.png','sun_rain.png','sun_thunder.png','rain.png','rain_thunder.png','cloudy.png','fog.png') COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `wx_img`
+--
+
+INSERT INTO `wx_img` (`id`, `img`) VALUES
+(1, 'sun.png'),
+(2, 'sun_cloudy.png'),
+(3, 'sun_cloudy.png'),
+(4, 'cloudy.png'),
+(5, 'cloudy.png'),
+(6, 'cloudy.png'),
+(7, 'cloudy.png'),
+(8, 'rain.png'),
+(9, 'rain.png'),
+(10, 'rain.png'),
+(11, 'rain.png'),
+(12, 'rain.png'),
+(13, 'rain.png'),
+(14, 'rain.png'),
+(15, 'rain_thunder.png'),
+(16, 'rain_thunder.png'),
+(17, 'rain_thunder.png'),
+(18, 'rain_thunder.png'),
+(19, 'sun_rain.png'),
+(20, 'rain.png'),
+(21, 'sun_thunder.png'),
+(22, 'rain_thunder.png'),
+(23, 'rain.png'),
+(24, 'fog.png'),
+(25, 'fog.png'),
+(26, 'fog.png'),
+(27, 'fog.png'),
+(28, 'fog.png'),
+(29, 'rain.png');
 
 --
 -- Indexes for dumped tables
@@ -98,6 +175,12 @@ ALTER TABLE `weather_week`
   ADD KEY `idx_week_Date` (`Date`);
 
 --
+-- Indexes for table `wx_img`
+--
+ALTER TABLE `wx_img`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -111,7 +194,7 @@ ALTER TABLE `rain`
 -- AUTO_INCREMENT for table `taiwan_citys`
 --
 ALTER TABLE `taiwan_citys`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `weather_72h`
@@ -124,3 +207,9 @@ ALTER TABLE `weather_72h`
 --
 ALTER TABLE `weather_week`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `wx_img`
+--
+ALTER TABLE `wx_img`
+  MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
