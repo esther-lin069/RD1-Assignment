@@ -23,4 +23,4 @@
     * 一週白天天氣預報（日期／天氣描述／高低溫／降雨機率）
     * 該縣市各區域雨量過去（一小時／一日）觀測數據，可由搜尋縮小資料範圍
 
-!(image)[https://i.imgur.com/Jmg6wJ9.png]
+![image](https://i.imgur.com/Jmg6wJ9.png)
