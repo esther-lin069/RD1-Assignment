@@ -95,7 +95,7 @@
       <div class="col-sm-5">
         <section class="weatherBox">
           <div id="weather-content">
-            <h4 id=box-location>location</h4>
+            <h4 id="box-location">location</h4>
             <p id="box-dataTime"></p>
             <h1 id="box-t"></h1>
             <p id="box-wx"></p>
@@ -191,7 +191,19 @@
         getTwoDays(city);
         setNow(city);
         getRain(city);
+        initMap();
       }
+
+      //var x = $("#box-location");
+      var lat, lng;
+      function initMap() {
+          navigator.geolocation.getCurrentPosition((position) => {
+              console.log(position.coords);
+              lat = position.coords.latitude;
+              lng = position.coords.longitude;
+          });
+      }
+  
 
       function getRain(location){
         $.get(`http://localhost:8888/RD1-Assignment/apis/getCwb.php?location=${location}&type=rain`,function(result){
